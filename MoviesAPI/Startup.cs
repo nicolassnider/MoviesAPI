@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
+using MoviesAPI.Services;
 using System.Text.Json.Serialization;
 
 namespace MoviesAPI
@@ -14,11 +16,16 @@ namespace MoviesAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
+            //services.AddTransient<IFileStorageService, AzureFileStorageService>();
+            //Almacenamiento local
+            services.AddTransient<IFileStorageService, RootFileStorageService>();
+            services.AddHttpContextAccessor();
+            //Fin almacenamiento local
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -27,6 +34,7 @@ namespace MoviesAPI
                 app.UseDeveloperExceptionPage();
             }
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCors();
 
