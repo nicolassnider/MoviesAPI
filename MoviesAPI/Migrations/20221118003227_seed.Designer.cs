@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesAPI;
 
@@ -11,9 +12,11 @@ using MoviesAPI;
 namespace MoviesAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221118003227_seed")]
+    partial class seed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,24 +67,6 @@ namespace MoviesAPI.Migrations
                             DateOfBirth = new DateTime(1981, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Chris Evans"
                         });
-                });
-
-            modelBuilder.Entity("MoviesAPI.Entities.Cinema", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("nvarchar(120)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cinemas");
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.Genre", b =>
@@ -246,21 +231,6 @@ namespace MoviesAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MoviesAPI.Entities.MoviesCinemas", b =>
-                {
-                    b.Property<int>("CinemaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CinemaId", "MovieId");
-
-                    b.HasIndex("MovieId");
-
-                    b.ToTable("MoviesCinemas");
-                });
-
             modelBuilder.Entity("MoviesAPI.Entities.MoviesGenres", b =>
                 {
                     b.Property<int>("GenreId")
@@ -342,25 +312,6 @@ namespace MoviesAPI.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("MoviesAPI.Entities.MoviesCinemas", b =>
-                {
-                    b.HasOne("MoviesAPI.Entities.Cinema", "Cinema")
-                        .WithMany("MoviesCinemas")
-                        .HasForeignKey("CinemaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MoviesAPI.Entities.Movie", "Movie")
-                        .WithMany("MoviesCinemas")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cinema");
-
-                    b.Navigation("Movie");
-                });
-
             modelBuilder.Entity("MoviesAPI.Entities.MoviesGenres", b =>
                 {
                     b.HasOne("MoviesAPI.Entities.Genre", "Genre")
@@ -385,11 +336,6 @@ namespace MoviesAPI.Migrations
                     b.Navigation("MoviesActors");
                 });
 
-            modelBuilder.Entity("MoviesAPI.Entities.Cinema", b =>
-                {
-                    b.Navigation("MoviesCinemas");
-                });
-
             modelBuilder.Entity("MoviesAPI.Entities.Genre", b =>
                 {
                     b.Navigation("MoviesGenres");
@@ -398,8 +344,6 @@ namespace MoviesAPI.Migrations
             modelBuilder.Entity("MoviesAPI.Entities.Movie", b =>
                 {
                     b.Navigation("MoviesActors");
-
-                    b.Navigation("MoviesCinemas");
 
                     b.Navigation("MoviesGenres");
                 });

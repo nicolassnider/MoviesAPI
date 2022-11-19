@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using MoviesAPI.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoviesAPI.DTOs
 {
@@ -8,6 +10,7 @@ namespace MoviesAPI.DTOs
         public string Title { get; set; }
         public bool InCinema { get; set; }
         public DateTime ReleaseDate { get; set; }
-        public string PosterUrl { get; set; }
+        public string PosterUrl { get; set; }        
+        
     }
 }

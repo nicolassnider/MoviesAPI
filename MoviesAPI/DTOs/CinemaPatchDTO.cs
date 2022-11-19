@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MoviesAPI.Entities
+namespace MoviesAPI.DTOs
 {
-    public class Genre:IId
+    public class CinemaPatchDTO
     {
         public int Id { get; set; }
         [Required]
-        [StringLength(40)]
+        [StringLength(120)]
         public string Name { get; set; }
-        public List<MoviesGenres> MoviesGenres { get; set; }
     }
 }

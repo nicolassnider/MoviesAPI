@@ -2,13 +2,11 @@
 
 namespace MoviesAPI.DTOs
 {
-    public class ActorDTO
+    public class CinemaDTO
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         [Required]
         [StringLength(120)]
         public string Name { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string PictureUrl { get; set; }
     }
 }

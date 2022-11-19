@@ -2,7 +2,7 @@
 
 namespace MoviesAPI.Entities
 {
-    public class Actor
+    public class Actor:IId
     {
         public int Id { get; set; }
         [Required]
@@ -10,5 +10,6 @@ namespace MoviesAPI.Entities
         public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PictureUrl { get; set; }
+        public List<MoviesActors> MoviesActors { get; set; }
     }
 }
