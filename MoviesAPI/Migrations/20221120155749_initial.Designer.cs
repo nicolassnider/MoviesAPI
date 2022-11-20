@@ -6,14 +6,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesAPI;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
 namespace MoviesAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221119024830_cinemas2")]
-    partial class cinemas2
+    [Migration("20221120155749_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,26 +48,6 @@ namespace MoviesAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 5,
-                            DateOfBirth = new DateTime(1962, 1, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Jim Carrey"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            DateOfBirth = new DateTime(1965, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Robert Downey Jr"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            DateOfBirth = new DateTime(1981, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Chris Evans"
-                        });
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.Cinema", b =>
@@ -76,6 +57,9 @@ namespace MoviesAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<Point>("Location")
+                        .HasColumnType("geography");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -103,28 +87,6 @@ namespace MoviesAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 4,
-                            Name = "Adventure"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Animation"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Suspense"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Romance"
-                        });
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.Movie", b =>
@@ -152,43 +114,6 @@ namespace MoviesAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            InCinema = true,
-                            ReleaseDate = new DateTime(2022, 11, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Avengers Endgame"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            InCinema = false,
-                            ReleaseDate = new DateTime(2021, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Avengers Infinity Wars"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            InCinema = false,
-                            ReleaseDate = new DateTime(2020, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Sonic the Hedgehog"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            InCinema = false,
-                            ReleaseDate = new DateTime(2021, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Emma"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            InCinema = false,
-                            ReleaseDate = new DateTime(2021, 7, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Wonder Woman 1984"
-                        });
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.MoviesActors", b =>
@@ -210,43 +135,6 @@ namespace MoviesAPI.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("MoviesActors");
-
-                    b.HasData(
-                        new
-                        {
-                            ActorId = 6,
-                            MovieId = 2,
-                            Character = "Tony Stark",
-                            Order = 0
-                        },
-                        new
-                        {
-                            ActorId = 7,
-                            MovieId = 2,
-                            Character = "Steve Rogers",
-                            Order = 0
-                        },
-                        new
-                        {
-                            ActorId = 6,
-                            MovieId = 3,
-                            Character = "Tony Stark",
-                            Order = 0
-                        },
-                        new
-                        {
-                            ActorId = 7,
-                            MovieId = 3,
-                            Character = "Steve Rogers",
-                            Order = 0
-                        },
-                        new
-                        {
-                            ActorId = 5,
-                            MovieId = 4,
-                            Character = "Dr Robotnic",
-                            Order = 0
-                        });
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.MoviesCinemas", b =>
@@ -277,53 +165,6 @@ namespace MoviesAPI.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("MoviesGenres");
-
-                    b.HasData(
-                        new
-                        {
-                            GenreId = 6,
-                            MovieId = 2
-                        },
-                        new
-                        {
-                            GenreId = 4,
-                            MovieId = 2
-                        },
-                        new
-                        {
-                            GenreId = 6,
-                            MovieId = 3
-                        },
-                        new
-                        {
-                            GenreId = 4,
-                            MovieId = 3
-                        },
-                        new
-                        {
-                            GenreId = 4,
-                            MovieId = 4
-                        },
-                        new
-                        {
-                            GenreId = 6,
-                            MovieId = 5
-                        },
-                        new
-                        {
-                            GenreId = 7,
-                            MovieId = 5
-                        },
-                        new
-                        {
-                            GenreId = 6,
-                            MovieId = 6
-                        },
-                        new
-                        {
-                            GenreId = 4,
-                            MovieId = 6
-                        });
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.MoviesActors", b =>

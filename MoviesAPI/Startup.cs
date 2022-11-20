@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using MoviesAPI.Helpers;
 using MoviesAPI.Services;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using System.Text.Json.Serialization;
 
 namespace MoviesAPI
@@ -21,9 +25,21 @@ namespace MoviesAPI
             services.AddTransient<IFileStorageService, RootFileStorageService>();
             services.AddHttpContextAccessor();
             //Fin almacenamiento local
+            services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4323));
+            services.AddSingleton(provider =>
+
+                new MapperConfiguration(config =>
+                {
+                    var geometryFactory = provider.GetRequiredService<GeometryFactory>();
+                    config.AddProfile(new AutomapperProfiles(geometryFactory));
+                }).CreateMapper()
+            );
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    sqlServerOptions=>sqlServerOptions.UseNetTopologySuite()
+                    );
+                
             });
             services.AddControllers().AddNewtonsoftJson();
         }

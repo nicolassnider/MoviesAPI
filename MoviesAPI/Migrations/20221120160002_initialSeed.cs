@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MoviesAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class seed : Migration
+    public partial class initialSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,6 +22,17 @@ namespace MoviesAPI.Migrations
                     { 5, new DateTime(1962, 1, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jim Carrey", null },
                     { 6, new DateTime(1965, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Robert Downey Jr", null },
                     { 7, new DateTime(1981, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Chris Evans", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Cinemas",
+                columns: new[] { "Id", "Location", "Name" },
+                values: new object[,]
+                {
+                    { 4, (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.44144 -58.87179)"), "Cinepolis" },
+                    { 5, (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.45114 -58.72646)"), "Cinemark TOM" },
+                    { 6, (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.44563 -58.86833)"), "Multiplex" },
+                    { 7, (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.54588 -58.48899)"), "Cinemark DOT" }
                 });
 
             migrationBuilder.InsertData(
@@ -78,6 +90,26 @@ namespace MoviesAPI.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DeleteData(
+                table: "Cinemas",
+                keyColumn: "Id",
+                keyValue: 4);
+
+            migrationBuilder.DeleteData(
+                table: "Cinemas",
+                keyColumn: "Id",
+                keyValue: 5);
+
+            migrationBuilder.DeleteData(
+                table: "Cinemas",
+                keyColumn: "Id",
+                keyValue: 6);
+
+            migrationBuilder.DeleteData(
+                table: "Cinemas",
+                keyColumn: "Id",
+                keyValue: 7);
+
             migrationBuilder.DeleteData(
                 table: "Genres",
                 keyColumn: "Id",

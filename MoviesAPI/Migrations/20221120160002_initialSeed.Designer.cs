@@ -6,14 +6,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesAPI;
+using NetTopologySuite.Geometries;
 
 #nullable disable
 
 namespace MoviesAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221119014949_cinemas")]
-    partial class cinemas
+    [Migration("20221120160002_initialSeed")]
+    partial class initialSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,6 +78,9 @@ namespace MoviesAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<Point>("Location")
+                        .HasColumnType("geography");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
@@ -85,6 +89,32 @@ namespace MoviesAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cinemas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.44144 -58.87179)"),
+                            Name = "Cinepolis"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.45114 -58.72646)"),
+                            Name = "Cinemark TOM"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.44563 -58.86833)"),
+                            Name = "Multiplex"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Location = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-34.54588 -58.48899)"),
+                            Name = "Cinemark DOT"
+                        });
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.Genre", b =>
