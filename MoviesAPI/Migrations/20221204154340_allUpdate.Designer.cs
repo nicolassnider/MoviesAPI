@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MoviesAPI;
 using NetTopologySuite.Geometries;
@@ -12,9 +13,11 @@ using NetTopologySuite.Geometries;
 namespace MoviesAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221204154340_allUpdate")]
+    partial class allUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace MoviesAPI.Migrations
                         new
                         {
                             Id = "07cf57c9-4ace-4454-80d5-fa17a61ce614",
-                            ConcurrencyStamp = "1276bd13-806d-45b7-b141-cb62b8b012dd",
+                            ConcurrencyStamp = "88e81bf5-425b-4ab8-a046-04aff071a854",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         });
@@ -153,15 +156,15 @@ namespace MoviesAPI.Migrations
                         {
                             Id = "f2de2c4e-87fb-40ef-bd50-7caae593fb43",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4c2ea7d4-6a98-4944-8a07-361d259f31e2",
+                            ConcurrencyStamp = "6b173b0a-1a76-4719-b81d-9a9a0d3b57e7",
                             Email = "nicolas@snider.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "nicolas@snider.com",
                             NormalizedUserName = "nicolas@snider.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMUwC8orw4fySgFZtR+V6AkAMUGMlEekNa0+NvcyOW6XxbA9GFmTdZ9nf1nwZnhwIw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIoRV9MjMVvtUwM68+qinW8O4HrzDhD8OOCP+cPGFiA0+ixEZkw4LW40eXPB/50EAw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "15222fa5-be8a-4ffd-89f5-f882e90641af",
+                            SecurityStamp = "b6f85047-5e5f-4335-9c93-9ca5b12463d5",
                             TwoFactorEnabled = false,
                             UserName = "nicolas@snider.com"
                         });
@@ -587,35 +590,6 @@ namespace MoviesAPI.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MoviesAPI.Entities.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Reviews");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -722,23 +696,6 @@ namespace MoviesAPI.Migrations
                     b.Navigation("Genre");
 
                     b.Navigation("Movie");
-                });
-
-            modelBuilder.Entity("MoviesAPI.Entities.Review", b =>
-                {
-                    b.HasOne("MoviesAPI.Entities.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Movie");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MoviesAPI.Entities.Actor", b =>

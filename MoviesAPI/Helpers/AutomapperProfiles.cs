@@ -14,6 +14,11 @@ namespace MoviesAPI.Helpers
             CreateMap<Genre, GenreDTO>().ReverseMap();
             CreateMap<GenreCreationDTO, Genre>();
 
+            CreateMap<Review, ReviewDTO>()
+                .ForMember(x => x.UserName, x => x.MapFrom(y => y.User.UserName));
+            CreateMap<ReviewDTO, Review>();
+            CreateMap<ReviewCreationDTO, Review>();
+
             CreateMap<Cinema, CinemaDTO>()
                 .ForMember(x => x.Latitude, x => x.MapFrom(y => y.Location.Y))
                 .ForMember(x => x.Longitude, x => x.MapFrom(y => y.Location.X));

@@ -1,12 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using MoviesAPI.Entities;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using System.Security.Claims;
 
 namespace MoviesAPI
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -27,6 +31,35 @@ namespace MoviesAPI
         
         private void SeedData(ModelBuilder modelBuilder)
         {
+            var adminRoleId = "07cf57c9-4ace-4454-80d5-fa17a61ce614";
+            var adminUserRoleId = "f2de2c4e-87fb-40ef-bd50-7caae593fb43";
+            var adminRole = new IdentityRole()
+            {
+                Id = adminRoleId,
+                Name = "Admin",
+                NormalizedName = "Admin"
+            };
+            var passwordHasher = new PasswordHasher<IdentityUser>();
+            var userName = "nicolas@snider.com";
+            var adminUser = new IdentityUser() { 
+                Id=adminUserRoleId,
+                UserName = userName,
+                NormalizedUserName=userName,
+                Email = userName,
+                NormalizedEmail = userName,
+                PasswordHash=passwordHasher.HashPassword(null,"Aa123456!")
+            };
+            modelBuilder.Entity<IdentityUser>().HasData(adminUser);
+            modelBuilder.Entity<IdentityRole>().HasData(adminRole);
+            modelBuilder.Entity<IdentityUserClaim<string>>().
+                HasData(new IdentityUserClaim<string>
+                {
+                    Id = 1,
+                    ClaimType = ClaimTypes.Role,
+                    UserId = adminUserRoleId,
+                    ClaimValue = "Admin"
+                });
+
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
             var cinepolis = new Cinema() { Id = 4, Name = "Cinepolis", Location = geometryFactory.CreatePoint(new Coordinate(-34.44144, -58.87179)) };
             var cinemarkTom = new Cinema() { Id = 5, Name = "Cinemark TOM", Location = geometryFactory.CreatePoint(new Coordinate(-34.45114, -58.72646)) };
@@ -88,5 +121,6 @@ namespace MoviesAPI
         public DbSet<MoviesActors> MoviesActors { get; set; }
         public DbSet<Cinema> Cinemas { get; set; }
         public DbSet<MoviesCinemas> MoviesCinemas { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }
